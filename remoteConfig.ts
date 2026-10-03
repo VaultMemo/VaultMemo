@@ -19,9 +19,9 @@ const DEFAULT_TIERS: PricingTier[] = [
   {name: 'Seed',     max:  512, usd: 0.80, label: '$0.80'},
   {name: 'Basic',    max: 1024, usd: 1.20, label: '$1.20'},
   {name: 'Standard', max: 1536, usd: 1.40, label: '$1.40'},
-  {name: 'Max',      max: 2048, usd: 1.60, label: '$1.60'},
-  {name: 'Pro',      max: 3072, usd: 1.90, label: '$1.90'},
-  {name: 'Ultra',    max: 4096, usd: 2.20, label: '$2.20'},
+  {name: 'Pro',      max: 2048, usd: 1.60, label: '$1.60'},
+  {name: 'Ultra',    max: 3072, usd: 1.90, label: '$1.90'},
+  {name: 'Max',      max: 4096, usd: 2.20, label: '$2.20'},
 ];
 
 export async function initRemoteConfig(): Promise<void> {
