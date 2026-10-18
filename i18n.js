@@ -978,6 +978,101 @@
   // Fix: Indonesian s2 had no number; keep numbering consistent
   L.id.s2 = '2. ID transaksi (TX ID)';
 
+  // How-to card (added 2026-10-18)
+  var HOW = {
+  "en": {
+    "howTitle": "How to use",
+    "how1": "In the VaultMemo app's folder (the one you chose, e.g. Downloads/VaultMemo), find the proof file: <span class='mono'>.vam</span> is an encrypted memo, <span class='mono'>.vamp</span> is a File Proof.",
+    "how2": "Drop it below. The TX ID is read from the file. Press Verify.",
+    "how3": "A match means the file is identical to what was recorded on Solana. No match means it was changed."
+  },
+  "ko": {
+    "howTitle": "사용 방법",
+    "how1": "VaultMemo 앱에서 고른 폴더(예: Downloads/VaultMemo)에서 증명 파일을 찾으세요. <span class='mono'>.vam</span>은 암호화 메모, <span class='mono'>.vamp</span>는 파일 증명(File Proof)입니다.",
+    "how2": "아래에 파일을 놓으면 TX ID는 파일에서 자동으로 읽습니다. 검증을 누르세요.",
+    "how3": "일치하면 Solana에 기록된 것과 같은 파일이라는 뜻입니다. 일치하지 않으면 바뀐 파일입니다."
+  },
+  "ja": {
+    "howTitle": "使い方",
+    "how1": "VaultMemo アプリで選んだフォルダ（例：Downloads/VaultMemo）から証明ファイルを探してください。<span class='mono'>.vam</span> は暗号化メモ、<span class='mono'>.vamp</span> はファイル証明（File Proof）です。",
+    "how2": "下にファイルをドロップすると、TX ID はファイルから自動で読み取られます。「検証」を押してください。",
+    "how3": "一致すれば、Solana に記録された内容と同一のファイルです。一致しない場合は変更されています。"
+  },
+  "zh": {
+    "howTitle": "使用方法",
+    "how1": "在 VaultMemo 应用中你选择的文件夹（例如 Downloads/VaultMemo）里找到证明文件：<span class='mono'>.vam</span> 是加密备忘录，<span class='mono'>.vamp</span> 是文件证明（File Proof）。",
+    "how2": "把文件拖到下方，TX ID 会从文件中自动读取。然后点击“验证”。",
+    "how3": "匹配表示该文件与 Solana 上记录的完全相同；不匹配表示文件已被修改。"
+  },
+  "zh-TW": {
+    "howTitle": "使用方式",
+    "how1": "在 VaultMemo 應用程式中你選擇的資料夾（例如 Downloads/VaultMemo）裡找到證明檔案：<span class='mono'>.vam</span> 是加密備忘錄，<span class='mono'>.vamp</span> 是檔案證明（File Proof）。",
+    "how2": "把檔案拖曳到下方，TX ID 會從檔案中自動讀取。然後按「驗證」。",
+    "how3": "相符表示該檔案與 Solana 上記錄的完全相同；不相符表示檔案已被修改。"
+  },
+  "de": {
+    "howTitle": "So funktioniert es",
+    "how1": "Suche die Nachweisdatei im Ordner der VaultMemo-App (den du gewählt hast, z. B. Downloads/VaultMemo): <span class='mono'>.vam</span> ist ein verschlüsseltes Memo, <span class='mono'>.vamp</span> ist ein File Proof.",
+    "how2": "Lege sie unten ab. Die TX-ID wird aus der Datei gelesen. Klicke auf Prüfen.",
+    "how3": "Eine Übereinstimmung heißt: Die Datei ist identisch mit dem, was auf Solana erfasst wurde. Keine Übereinstimmung heißt: Sie wurde verändert."
+  },
+  "es": {
+    "howTitle": "Cómo se usa",
+    "how1": "Busca el archivo de prueba en la carpeta de la app VaultMemo (la que elegiste, p. ej. Downloads/VaultMemo): <span class='mono'>.vam</span> es un memo cifrado y <span class='mono'>.vamp</span> es una prueba de archivo (File Proof).",
+    "how2": "Suéltalo abajo. El TX ID se lee del propio archivo. Pulsa Verificar.",
+    "how3": "Coincide significa que el archivo es idéntico a lo registrado en Solana. No coincide significa que fue modificado."
+  },
+  "fr": {
+    "howTitle": "Mode d'emploi",
+    "how1": "Trouvez le fichier de preuve dans le dossier de l'application VaultMemo (celui que vous avez choisi, p. ex. Downloads/VaultMemo) : <span class='mono'>.vam</span> est un mémo chiffré, <span class='mono'>.vamp</span> est une preuve de fichier (File Proof).",
+    "how2": "Déposez-le ci-dessous. Le TX ID est lu dans le fichier. Cliquez sur Vérifier.",
+    "how3": "Une correspondance signifie que le fichier est identique à ce qui a été enregistré sur Solana. Sinon, il a été modifié."
+  },
+  "it": {
+    "howTitle": "Come si usa",
+    "how1": "Trova il file di prova nella cartella dell'app VaultMemo (quella che hai scelto, es. Downloads/VaultMemo): <span class='mono'>.vam</span> è un memo cifrato, <span class='mono'>.vamp</span> è una prova di file (File Proof).",
+    "how2": "Trascinalo qui sotto. Il TX ID viene letto dal file. Premi Verifica.",
+    "how3": "Corrisponde significa che il file è identico a quanto registrato su Solana. Non corrisponde significa che è stato modificato."
+  },
+  "pt": {
+    "howTitle": "Como usar",
+    "how1": "Encontre o arquivo de prova na pasta do app VaultMemo (a que você escolheu, ex.: Downloads/VaultMemo): <span class='mono'>.vam</span> é um memo criptografado e <span class='mono'>.vamp</span> é uma prova de arquivo (File Proof).",
+    "how2": "Solte-o abaixo. O TX ID é lido do próprio arquivo. Clique em Verificar.",
+    "how3": "Confere significa que o arquivo é idêntico ao registrado na Solana. Não confere significa que ele foi alterado."
+  },
+  "ru": {
+    "howTitle": "Как пользоваться",
+    "how1": "Найдите файл-доказательство в папке приложения VaultMemo (той, что вы выбрали, например Downloads/VaultMemo): <span class='mono'>.vam</span> — зашифрованное мемо, <span class='mono'>.vamp</span> — подтверждение файла (File Proof).",
+    "how2": "Перетащите его ниже. TX ID считывается из файла. Нажмите «Проверить».",
+    "how3": "Совпадение означает, что файл идентичен записанному в Solana. Если не совпадает — файл был изменён."
+  },
+  "tr": {
+    "howTitle": "Nasıl kullanılır",
+    "how1": "İspat dosyasını VaultMemo uygulamasında seçtiğiniz klasörde (örn. Downloads/VaultMemo) bulun: <span class='mono'>.vam</span> şifreli bir nottur, <span class='mono'>.vamp</span> bir Dosya Kanıtıdır (File Proof).",
+    "how2": "Aşağıya bırakın. TX ID dosyadan okunur. Doğrula'ya basın.",
+    "how3": "Eşleşme, dosyanın Solana'da kaydedilenle aynı olduğu anlamına gelir. Eşleşmeme, dosyanın değiştirildiği anlamına gelir."
+  },
+  "vi": {
+    "howTitle": "Cách dùng",
+    "how1": "Tìm tệp bằng chứng trong thư mục của ứng dụng VaultMemo (thư mục bạn đã chọn, ví dụ Downloads/VaultMemo): <span class='mono'>.vam</span> là ghi chú đã mã hóa, <span class='mono'>.vamp</span> là Bằng chứng tệp (File Proof).",
+    "how2": "Thả tệp xuống bên dưới. TX ID được đọc từ chính tệp. Nhấn Xác minh.",
+    "how3": "Khớp nghĩa là tệp giống hệt nội dung đã ghi trên Solana. Không khớp nghĩa là tệp đã bị thay đổi."
+  },
+  "id": {
+    "howTitle": "Cara menggunakan",
+    "how1": "Temukan berkas bukti di folder aplikasi VaultMemo (yang Anda pilih, mis. Downloads/VaultMemo): <span class='mono'>.vam</span> adalah memo terenkripsi, <span class='mono'>.vamp</span> adalah Bukti Berkas (File Proof).",
+    "how2": "Jatuhkan di bawah. TX ID dibaca dari berkas itu. Tekan Verifikasi.",
+    "how3": "Cocok berarti berkas identik dengan yang dicatat di Solana. Tidak cocok berarti berkas telah diubah."
+  },
+  "hi": {
+    "howTitle": "उपयोग कैसे करें",
+    "how1": "VaultMemo ऐप में आपके चुने फ़ोल्डर (जैसे Downloads/VaultMemo) में प्रूफ़ फ़ाइल खोजें: <span class='mono'>.vam</span> एन्क्रिप्टेड मेमो है और <span class='mono'>.vamp</span> फ़ाइल प्रूफ़ (File Proof) है।",
+    "how2": "उसे नीचे छोड़ें। TX ID फ़ाइल से अपने आप पढ़ा जाता है। सत्यापित करें दबाएँ।",
+    "how3": "मिलान का अर्थ है कि फ़ाइल Solana पर दर्ज फ़ाइल के समान है। मिलान न होने का अर्थ है कि वह बदली गई है।"
+  }
+};
+  Object.keys(HOW).forEach(function (c) { Object.keys(HOW[c]).forEach(function (k) { L[c][k] = HOW[c][k]; }); });
+
   var FLAGS = { en: '🇺🇸', ko: '🇰🇷', ja: '🇯🇵', zh: '🇨🇳', 'zh-TW': '🇹🇼', de: '🇩🇪', es: '🇪🇸', fr: '🇫🇷', it: '🇮🇹', pt: '🇧🇷', ru: '🇷🇺', tr: '🇹🇷', vi: '🇻🇳', id: '🇮🇩', hi: '🇮🇳' };
   Object.keys(FLAGS).forEach(function (c) { L[c].flag = FLAGS[c]; });
 
