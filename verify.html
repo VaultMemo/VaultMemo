@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VaultMemo Verify</title>
+<meta name="description" content="Check a file against its VaultMemo record on Solana. Everything runs in your browser; the file is never uploaded.">
+<style>
+  :root{--bg:#F4F1EA;--text:#141412;--muted:#5A574F;--line:#D9D4C7;--card:#FBF9F4;--accent:#0CB55A;--bad:#B3261E;--warn:#8A5A00}
+  @media (prefers-color-scheme:dark){:root{--bg:#161614;--text:#F1EEE6;--muted:#A9A599;--line:#33322D;--card:#1E1E1B;--accent:#2BD37A;--bad:#FF8A80;--warn:#F2C26B}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+  main{max-width:720px;margin:0 auto;padding:24px 16px 64px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:2.4rem;line-height:1.1;margin:0 0 8px;letter-spacing:-0.01em}
+  .sub{color:var(--muted);margin:0 0 28px}
+  .bar{width:48px;height:4px;background:var(--accent);margin:0 0 18px}
+  .top{display:flex;justify-content:flex-end;margin-bottom:16px}
+  .top select{font:inherit;font-size:.9rem;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
+  label{display:block;font-weight:600;margin:0 0 6px}
+  .hint{color:var(--muted);font-size:.9rem;margin:6px 0 0}
+  #drop{border:2px dashed var(--line);border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;color:var(--muted)}
+  #drop.over{border-color:var(--accent);color:var(--text)}
+  #drop strong{color:var(--text)}
+  input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem}
+  button{font:inherit;font-weight:600;border:0;border-radius:8px;padding:12px 20px;background:var(--text);color:var(--bg);cursor:pointer}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  button.link{background:none;color:var(--muted);padding:0;font-weight:400;text-decoration:underline}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
+  #fileinfo{margin-top:12px;font-size:.92rem;color:var(--muted);word-break:break-all}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;word-break:break-all}
+  #result{display:none}
+  .badge{display:inline-block;font-weight:700;padding:4px 10px;border-radius:999px;font-size:.9rem;margin-bottom:10px}
+  .ok{background:var(--accent);color:#06210f}.bad{background:var(--bad);color:#fff}.warn{background:var(--warn);color:#fff}
+  .vwarn{color:var(--bad);font-weight:700}
+  dl{margin:12px 0 0;display:grid;grid-template-columns:130px 1fr;gap:6px 12px}
+  dt{color:var(--muted)}dd{margin:0;word-break:break-all}
+  a{color:inherit}
+  .notes{color:var(--muted);font-size:.9rem}
+  .notes li{margin:6px 0}
+  details{margin-top:8px}
+  summary{cursor:pointer;color:var(--muted)}
+  @media (max-width:520px){dl{grid-template-columns:1fr}dt{margin-top:6px}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><select id="lang" aria-label="Language"></select></div>
+  <div class="bar"></div>
+  <h1 id="t-title"></h1>
+  <p class="sub" id="t-sub"></p>
+
+  <div class="card">
+    <label for="file" id="t-s1"></label>
+    <div id="drop" tabindex="0" role="button">
+      <span id="t-dropMain"></span><br><span id="t-dropSub"></span>
+    </div>
+    <input id="file" type="file" hidden>
+    <div id="fileinfo"></div>
+  </div>
+
+  <div class="card">
+    <label for="tx" id="t-s2"></label>
+    <input id="tx" type="text" autocomplete="off" spellcheck="false">
+    <p class="hint" id="t-txHint"></p>
+    <details>
+      <summary id="t-advSum"></summary>
+      <p class="hint" id="t-advHint"></p>
+      <input id="rpc" type="text" autocomplete="off" spellcheck="false">
+    </details>
+    <div class="row">
+      <button id="go" disabled></button>
+      <button id="reset" class="link" type="button"></button>
+      <span id="busy" class="hint"></span>
+    </div>
+  </div>
+
+  <div id="result" class="card" aria-live="polite"></div>
+
+  <ul class="notes">
+    <li id="t-n1"></li>
+    <li id="t-n2"></li>
+    <li id="t-n3"></li>
+    <li id="t-n4"></li>
+  </ul>
+</main>
+
+<script src="verify-core.js"></script>
+<script src="i18n.js"></script>
+<script>
+(function () {
+  'use strict';
+  var V = window.VMVerify, I = window.VMI18n;
+  var $ = function (id) { return document.getElementById(id); };
+  var drop = $('drop'), fileInput = $('file'), fileinfo = $('fileinfo'), tx = $('tx'), rpc = $('rpc');
+  var go = $('go'), busy = $('busy'), result = $('result'), langSel = $('lang');
+  var state = null; // { kind: 'file'|'memo', hash, name, size }
+  var MAX_BYTES = 300 * 1024 * 1024;
+  var autoTx = '';          // TX ID that the page filled in from a .vamp/.vam file
+  var infoView = null;      // functions that build the HTML, so it can be redrawn when the language changes
+  var resultView = null;
+  var lang = 'en';
+
+  rpc.value = V.DEFAULT_RPCS[0];
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  // t(key, a, b): text in the chosen language; {0}, {1} are replaced by HTML-escaped values
+  function t(key) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    var s = I.L[lang][key];
+    if (s === undefined) s = I.L.en[key];
+    return s.replace(/\{(\d)\}/g, function (m, i) { return esc(args[+i]); });
+  }
+  function fmtSize(n) { return n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' KB' : (n / 1048576).toFixed(1) + ' MB'; }
+  // Dates follow the chosen language: your local time (with its time zone), then UTC
+  function fmtTime(sec) {
+    var d = new Date(sec * 1000), o = { dateStyle: 'long', timeStyle: 'long' };
+    try {
+      return esc(new Intl.DateTimeFormat(lang, o).format(d)) + '<br>' +
+        esc(new Intl.DateTimeFormat(lang, { dateStyle: 'long', timeStyle: 'long', timeZone: 'UTC' }).format(d));
+    } catch (e) { return esc(d.toISOString()); }
+  }
+  function setResult(fn) {
+    resultView = fn;
+    if (!fn) { result.style.display = 'none'; return; }
+    result.innerHTML = fn(); result.style.display = 'block';
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function setInfo(fn) { infoView = fn; fileinfo.innerHTML = fn ? fn() : ''; }
+  function updateGo() { go.disabled = !(state && state.hash && tx.value.trim()); }
+
+  var STATIC = ['title', 'sub', 's1', 'dropMain', 'dropSub', 's2', 'txHint', 'advSum', 'advHint', 'n1', 'n2', 'n3', 'n4'];
+  var downloadBytes = null; // bytes of the original file inside an opened .vamp
+  function bindDownload() {
+    var a = $('dl'); if (!a) return;
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault();
+      var l = document.createElement('a'); l.href = URL.createObjectURL(new Blob([downloadBytes]));
+      l.download = state && state.name ? state.name : 'file'; document.body.appendChild(l); l.click(); l.remove();
+      setTimeout(function () { URL.revokeObjectURL(l.href); }, 5000);
+    });
+  }
+  function applyLang(code, save) {
+    lang = I.L[code] ? code : 'en';
+    document.documentElement.lang = lang;
+    STATIC.forEach(function (k) { $('t-' + k).innerHTML = t(k); });
+    document.title = t('title');
+    tx.placeholder = t('txPh');
+    go.textContent = t('verify'); $('reset').textContent = t('startOver');
+    langSel.setAttribute('aria-label', t('langLabel')); langSel.value = lang;
+    if (infoView) { fileinfo.innerHTML = infoView(); bindDownload(); }
+    if (resultView) result.innerHTML = resultView();
+    if (save) { try { localStorage.setItem('vm-verify-lang', lang); } catch (e) { /* ignore */ } }
+  }
+  I.ORDER.forEach(function (c) { var o = document.createElement('option'); o.value = c; o.textContent = I.L[c].name; langSel.appendChild(o); });
+  langSel.addEventListener('change', function () { applyLang(langSel.value, true); });
+
+  async function loadFile(f) {
+    if (autoTx && tx.value.trim() === autoTx) tx.value = '';
+    autoTx = ''; downloadBytes = null;
+    state = null; setResult(null); setInfo(null); updateGo();
+    if (!f) return;
+    if (f.size > MAX_BYTES) { setInfo(function () { return esc(t('tooBig')); }); return; }
+    busy.textContent = t('reading');
+    try {
+      var buf = await f.arrayBuffer();
+      if (V.isVamp(buf)) {
+        var u;
+        try { u = await V.unsealVamp(buf); }
+        catch (e) { setInfo(function () { return t('vampBad', f.name); }); busy.textContent = ''; return; }
+        var m = u.meta || {}, mtx = typeof m.tx === 'string' ? m.tx : '';
+        state = { kind: 'file', name: typeof m.name === 'string' ? m.name : f.name, size: u.fileBytes.length, hash: u.fileHash };
+        downloadBytes = u.fileBytes;
+        var replacedV = !!(mtx && tx.value.trim() && tx.value.trim() !== mtx);
+        if (mtx) { tx.value = mtx; autoTx = mtx; }
+        setInfo(function () {
+          return t('vampHead', f.name) + '<br>' + t('vampContains', state.name, fmtSize(u.fileBytes.length)) +
+            '<br>SHA-256: <span class="mono">' + u.fileHash + '</span>' +
+            '<br>' + (mtx ? t(replacedV ? 'txFromRep' : 'txFrom') : t('noTx')) +
+            (u.tagOk ? '' : '<br><span class="vwarn">' + t('vampWarn') + '</span> ' + t('vampWarn2')) +
+            '<br><a id="dl" href="#">' + t('saveOrig') + '</a>';
+        });
+        bindDownload();
+        busy.textContent = ''; updateGo(); return;
+      }
+      var vam = null;
+      if (f.size < 5 * 1024 * 1024) { try { vam = V.parseVam(new TextDecoder('utf-8', { fatal: true }).decode(buf)); } catch (e) { vam = null; } }
+      if (vam) {
+        state = { kind: 'memo', name: f.name, size: f.size, hash: await V.sha256Hex(vam.enc) };
+        var replaced = !!(vam.tx && tx.value.trim() && tx.value.trim() !== vam.tx);
+        if (vam.tx) { tx.value = vam.tx; autoTx = vam.tx; }
+        setInfo(function () {
+          return t('memoHead', f.name, fmtSize(f.size)) + '<br>' + t('fp', '<>').replace(/&lt;&gt;/, '<span class="mono">' + state.hash + '</span>') +
+            '<br>' + (vam.tx ? t(replaced ? 'txFromRep' : 'txFrom') : t('noTx'));
+        });
+      } else {
+        state = { kind: 'file', name: f.name, size: f.size, hash: await V.sha256Hex(buf) };
+        setInfo(function () { return '<strong>' + esc(f.name) + '</strong> · ' + fmtSize(f.size) + '<br>SHA-256: <span class="mono">' + state.hash + '</span>'; });
+      }
+    } catch (e) {
+      setInfo(function () { return esc(t('cantRead')); });
+    }
+    busy.textContent = ''; updateGo();
+  }
+
+  drop.addEventListener('click', function () { fileInput.click(); });
+  drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+  fileInput.addEventListener('change', function () { loadFile(fileInput.files[0]); });
+  ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+  drop.addEventListener('drop', function (e) { var f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+  tx.addEventListener('input', updateGo);
+  $('reset').addEventListener('click', function () { state = null; autoTx = ''; downloadBytes = null; fileInput.value = ''; tx.value = ''; setInfo(null); setResult(null); busy.textContent = ''; updateGo(); });
+
+  function row(k, v) { return '<dt>' + esc(k) + '</dt><dd>' + v + '</dd>'; }
+  function hostOf(u) { try { return new URL(u).host; } catch (e) { return u; } }
+
+  go.addEventListener('click', async function () {
+    var sig = tx.value.trim();
+    if (!V.isValidSignature(sig)) { setResult(function () { return '<span class="badge warn">' + esc(t('bCheck')) + '</span><p>' + esc(t('checkBody')) + '</p>'; }); return; }
+    go.disabled = true; busy.textContent = t('looking');
+    var out, found, st = state;
+    try {
+      var custom = rpc.value.trim();
+      var urls = (custom && custom !== V.DEFAULT_RPCS[0] ? [custom] : []).concat(V.DEFAULT_RPCS);
+      found = await V.fetchTransactionAny(urls, sig);
+      out = V.evaluate(st.kind, st.hash, found.tx);
+    } catch (e) {
+      var msg = e.message;
+      setResult(function () { return '<span class="badge warn">' + esc(t('bLookup')) + '</span><p>' + t('lookupBody', msg) + '</p>'; });
+      busy.textContent = ''; updateGo(); return;
+    }
+    busy.textContent = ''; updateGo();
+    var link = 'https://explorer.solana.com/tx/' + encodeURIComponent(sig);
+    setResult(function () {
+      var explorer = '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' + esc(t('lExplorer')) + '</a>';
+      var details = '';
+      if (out.memo) {
+        details = '<dl>' +
+          row(t('lRec'), '<span class="mono">' + out.memo.hash + '</span>') +
+          row(t('lYour'), '<span class="mono">' + st.hash + '</span>') +
+          (out.blockTime ? row(t('lOn'), fmtTime(out.blockTime)) : '') +
+          (out.feePayer ? row(t('lBy'), '<span class="mono">' + esc(out.feePayer) + '</span>') : '') +
+          row(t('lTx'), explorer) +
+          row(t('lFrom'), esc(hostOf(found.tried[found.tried.length - 1].url))) +
+          '</dl>';
+      }
+      var s = out.status, k = st.kind === 'file';
+      if (s === 'match') return '<span class="badge ok">' + esc(t('bOk')) + '</span><p>' + t(k ? 'matchFile' : 'matchMemo') + '</p>' + details + (out.memo.hash.length === 16 ? '<p class="hint">' + t('legacy') + '</p>' : '');
+      if (s === 'mismatch') return '<span class="badge bad">' + esc(t('bBad')) + '</span><p>' + t(k ? 'misFile' : 'misMemo') + '</p>' + details;
+      if (s === 'type_mismatch') return '<span class="badge warn">' + esc(t('bKind')) + '</span><p>' + t(out.memo.kind === 'FILE' ? 'typeA' : 'typeB') + '</p>' + details;
+      if (s === 'not_found') {
+        var asked = found.tried.filter(function (x) { return x.outcome === 'null'; }).map(function (x) { return hostOf(x.url); }).join(', ');
+        return '<span class="badge warn">' + esc(t('bNF')) + '</span><p>' + t('nfBody', asked) + '</p>';
+      }
+      if (s === 'tx_failed') return '<span class="badge bad">' + esc(t('bFail')) + '</span><p>' + t('failBody') + '</p><p>' + explorer + '</p>';
+      return '<span class="badge warn">' + esc(t('bNone')) + '</span><p>' + t('noneBody') + '</p><p>' + explorer + '</p>';
+    });
+  });
+
+  // Start language: ?lang=xx, then the saved choice, then the browser language, then English
+  var initial = null;
+  try { initial = new URLSearchParams(location.search).get('lang'); } catch (e) { /* ignore */ }
+  if (!initial || !I.L[initial]) { try { initial = localStorage.getItem('vm-verify-lang'); } catch (e) { initial = null; } }
+  if (!initial || !I.L[initial]) initial = I.pick(navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]);
+  applyLang(initial, false);
+})();
+</script>
+</body>
+</html>

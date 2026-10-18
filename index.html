@@ -42,9 +42,26 @@ footer{padding:72px 0 88px}
 .legal{margin:48px 0 0;display:flex;flex-wrap:wrap;gap:24px;font-size:.85rem}
 .legal a{color:var(--sub)}.legal a:hover{color:var(--text)}
 @media (max-width:560px){.grid{grid-template-columns:minmax(0,1fr)}.hero{padding:56px 0 40px}.logo{margin-bottom:40px}.step{grid-template-columns:48px minmax(0,1fr)}section{padding:56px 0}}
+.topbar{border-bottom:1px solid var(--line);background:var(--raised)}.topbar .wrap{display:flex;justify-content:flex-end;padding-top:10px;padding-bottom:10px}.topbar a{font-size:.9rem;font-weight:600}
 </style>
 </head>
 <body>
+
+  <div class="topbar"><div class="wrap"><a id="verify-link" href="verify.html">Verify a file &rarr;</a></div></div>
+  <script>
+  (function(){
+    var T={en:'Verify a file',ko:'파일 검증하기',ja:'ファイルを検証',zh:'验证文件','zh-TW':'驗證檔案',de:'Datei prüfen',es:'Verificar un archivo',fr:'Vérifier un fichier',it:'Verifica un file',pt:'Verificar um arquivo',ru:'Проверить файл',tr:'Dosya doğrula',vi:'Xác minh tệp',id:'Verifikasi berkas',hi:'फ़ाइल सत्यापित करें'};
+    var saved=null;try{saved=localStorage.getItem('vm-verify-lang');}catch(e){}
+    var langs=saved?[saved]:(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language]);
+    var code='en';
+    for(var i=0;i<langs.length;i++){var l=String(langs[i]||'').toLowerCase();
+      if(/^zh/.test(l)){code=/(tw|hk|mo|hant)/.test(l)?'zh-TW':'zh';break;}
+      var b=l.split('-')[0];if(b==='in')b='id';if(T[b]){code=b;break;}
+      if(T[langs[i]]){code=langs[i];break;}}
+    document.getElementById('verify-link').innerHTML=T[code]+' &rarr;';
+  })();
+  </script>
+
 
   <div class="wrap">
     <div class="hero">
