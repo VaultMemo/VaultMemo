@@ -6,15 +6,16 @@
 <title>VaultMemo Verify</title>
 <meta name="description" content="Check a file against its VaultMemo record on Solana. Everything runs in your browser; the file is never uploaded.">
 <style>
-  :root{--bg:#F4F1EA;--text:#141412;--muted:#5A574F;--line:#D9D4C7;--card:#FBF9F4;--accent:#0CB55A;--bad:#B3261E;--warn:#8A5A00}
-  @media (prefers-color-scheme:dark){:root{--bg:#161614;--text:#F1EEE6;--muted:#A9A599;--line:#33322D;--card:#1E1E1B;--accent:#2BD37A;--bad:#FF8A80;--warn:#F2C26B}}
+  :root{--bg:#161614;--text:#F1EEE6;--muted:#A9A599;--line:#33322D;--card:#1E1E1B;--accent:#2BD37A;--bad:#FF8A80;--warn:#F2C26B;--badtext:#3a0907;color-scheme:dark}
+  :root[data-theme=light]{--bg:#F4F1EA;--text:#141412;--muted:#5A574F;--line:#D9D4C7;--card:#FBF9F4;--accent:#0CB55A;--bad:#B3261E;--warn:#8A5A00;--badtext:#fff;color-scheme:light}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
   main{max-width:720px;margin:0 auto;padding:24px 16px 64px}
   h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:2.4rem;line-height:1.1;margin:0 0 8px;letter-spacing:-0.01em}
   .sub{color:var(--muted);margin:0 0 28px}
   .bar{width:48px;height:4px;background:var(--accent);margin:0 0 18px}
-  .top{display:flex;justify-content:flex-end;margin-bottom:16px}
+  .top{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:16px}
+  .top button{padding:6px 10px;font-size:1rem;background:var(--card);color:var(--text);border:1px solid var(--line);line-height:1}
   .top select{font:inherit;font-size:.9rem;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text)}
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
   label{display:block;font-weight:600;margin:0 0 6px}
@@ -31,7 +32,7 @@
   .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;word-break:break-all}
   #result{display:none}
   .badge{display:inline-block;font-weight:700;padding:4px 10px;border-radius:999px;font-size:.9rem;margin-bottom:10px}
-  .ok{background:var(--accent);color:#06210f}.bad{background:var(--bad);color:#fff}.warn{background:var(--warn);color:#fff}
+  .ok{background:var(--accent);color:#06210f}.bad{background:var(--bad);color:var(--badtext)}.warn{background:var(--warn);color:var(--badtext)}
   .vwarn{color:var(--bad);font-weight:700}
   dl{margin:12px 0 0;display:grid;grid-template-columns:130px 1fr;gap:6px 12px}
   dt{color:var(--muted)}dd{margin:0;word-break:break-all}
@@ -45,7 +46,7 @@
 </head>
 <body>
 <main>
-  <div class="top"><select id="lang" aria-label="Language"></select></div>
+  <div class="top"><span aria-hidden="true">🌐</span><select id="lang" aria-label="Language"></select><button id="theme" type="button" aria-label="Theme"></button></div>
   <div class="bar"></div>
   <h1 id="t-title"></h1>
   <p class="sub" id="t-sub"></p>
@@ -103,6 +104,17 @@
 
   rpc.value = V.DEFAULT_RPCS[0];
 
+  // Theme: dark by default; the button switches and remembers the choice
+  var themeBtn = $('theme');
+  function setTheme(th, save) {
+    document.documentElement.setAttribute('data-theme', th);
+    themeBtn.textContent = th === 'dark' ? '☀️' : '🌙';
+    if (save) { try { localStorage.setItem('vm-verify-theme', th); } catch (e) { /* ignore */ } }
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem('vm-verify-theme'); } catch (e) { /* ignore */ }
+  setTheme(savedTheme === 'light' ? 'light' : 'dark', false);
+  themeBtn.addEventListener('click', function () { setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true); });
+
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   // t(key, a, b): text in the chosen language; {0}, {1} are replaced by HTML-escaped values
   function t(key) {
@@ -152,7 +164,7 @@
     if (resultView) result.innerHTML = resultView();
     if (save) { try { localStorage.setItem('vm-verify-lang', lang); } catch (e) { /* ignore */ } }
   }
-  I.ORDER.forEach(function (c) { var o = document.createElement('option'); o.value = c; o.textContent = I.L[c].name; langSel.appendChild(o); });
+  I.ORDER.forEach(function (c) { var o = document.createElement('option'); o.value = c; o.textContent = I.L[c].flag + ' ' + I.L[c].name; langSel.appendChild(o); });
   langSel.addEventListener('change', function () { applyLang(langSel.value, true); });
 
   async function loadFile(f) {

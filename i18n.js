@@ -978,6 +978,9 @@
   // Fix: Indonesian s2 had no number; keep numbering consistent
   L.id.s2 = '2. ID transaksi (TX ID)';
 
+  var FLAGS = { en: '🇺🇸', ko: '🇰🇷', ja: '🇯🇵', zh: '🇨🇳', 'zh-TW': '🇹🇼', de: '🇩🇪', es: '🇪🇸', fr: '🇫🇷', it: '🇮🇹', pt: '🇧🇷', ru: '🇷🇺', tr: '🇹🇷', vi: '🇻🇳', id: '🇮🇩', hi: '🇮🇳' };
+  Object.keys(FLAGS).forEach(function (c) { L[c].flag = FLAGS[c]; });
+
   var ORDER = ['en', 'ko', 'ja', 'zh', 'zh-TW', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'tr', 'vi', 'id', 'hi'];
 
   /** Pick a language from a list of browser language tags ("ko-KR", "zh-Hant-TW", ...) */
