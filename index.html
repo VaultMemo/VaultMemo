@@ -43,25 +43,48 @@ footer{padding:72px 0 88px}
 .legal a{color:var(--sub)}.legal a:hover{color:var(--text)}
 @media (max-width:560px){.grid{grid-template-columns:minmax(0,1fr)}.hero{padding:56px 0 40px}.logo{margin-bottom:40px}.step{grid-template-columns:48px minmax(0,1fr)}section{padding:56px 0}}
 .topbar{border-bottom:1px solid var(--line);background:var(--raised)}.topbar .wrap{display:flex;justify-content:flex-end;padding-top:10px;padding-bottom:10px}.topbar a{font-size:.9rem;font-weight:600}
+.topbar .bar{justify-content:space-between;align-items:center}.topbar select{font:inherit;font-size:.85rem;padding:4px 6px;border:1px solid var(--line2);border-radius:6px;background:var(--bg);color:var(--text)}.topbar .lang{color:var(--sub);font-size:.9rem}
 </style>
 </head>
 <body>
 
-  <div class="topbar"><div class="wrap"><a id="verify-link" href="verify.html">Verify a file &rarr;</a></div></div>
+  <div class="topbar"><div class="wrap bar"><span class="lang"><span aria-hidden="true">&#127760;</span> <select id="lang" aria-label="Language"></select></span><a id="verify-link" href="verify.html">Verify a file &rarr;</a></div></div>
+  <script src="home-i18n.js?v=2"></script>
   <script>
   (function(){
-    var T={en:'Verify a file',ko:'파일 검증하기',ja:'ファイルを検証',zh:'验证文件','zh-TW':'驗證檔案',de:'Datei prüfen',es:'Verificar un archivo',fr:'Vérifier un fichier',it:'Verifica un file',pt:'Verificar um arquivo',ru:'Проверить файл',tr:'Dosya doğrula',vi:'Xác minh tệp',id:'Verifikasi berkas',hi:'फ़ाइल सत्यापित करें'};
-    var saved=null;try{saved=localStorage.getItem('vm-verify-lang');}catch(e){}
-    var langs=saved?[saved]:(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language]);
-    var code='en';
-    for(var i=0;i<langs.length;i++){var l=String(langs[i]||'').toLowerCase();
-      if(/^zh/.test(l)){code=/(tw|hk|mo|hant)/.test(l)?'zh-TW':'zh';break;}
-      var b=l.split('-')[0];if(b==='in')b='id';if(T[b]){code=b;break;}
-      if(T[langs[i]]){code=langs[i];break;}}
-    document.getElementById('verify-link').innerHTML=T[code]+' &rarr;';
+    var H=window.VMHome, $=function(id){return document.getElementById(id);};
+    var sel=$('lang'), showFlags=!/windows/i.test(navigator.userAgent||'');
+    H.ORDER.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=(showFlags?H.FLAGS[c]+' ':'')+H.NAMES[c];sel.appendChild(o);});
+    function setText(el,t){if(el)el.textContent=t;}
+    function apply(code,save){
+      var t=H.table(code); document.documentElement.lang=code; sel.value=code; sel.setAttribute('aria-label',t.langLabel);
+      setText(document.querySelector('.tagline'),t.tagline); setText(document.querySelector('.quote'),t.quote);
+      var secs=document.querySelectorAll('section');
+      // section 1: what it does
+      setText(secs[0].querySelector('h2'),t.hWhat); setText(secs[0].querySelector('.lede'),t.lede);
+      var cards=secs[0].querySelectorAll('.card'); [1,2,3,4].forEach(function(n,i){setText(cards[i].querySelector('h3'),t['c'+n+'h']);setText(cards[i].querySelector('p'),t['c'+n+'p']);});
+      // section 2: how it works
+      setText(secs[1].querySelector('h2'),t.hHow);
+      var st=secs[1].querySelectorAll('.step-body'); [1,2,3].forEach(function(n,i){setText(st[i].querySelector('h3'),t['s'+n+'h']);setText(st[i].querySelector('p'),t['s'+n+'p']);});
+      // section 3: FAQ
+      setText(secs[2].querySelector('h2'),t.hFaq); setText(secs[2].querySelector('.lede'),t.faqLede);
+      var q=secs[2].querySelectorAll('.step-body'); for(var n=1;n<=9;n++){
+        var b=q[n-1]; setText(b.querySelector('h3'),t['q'+n+'h']); var p=b.querySelector('p');
+        if(n===9){var a=p.querySelector('a'); p.textContent=t.q9p+' '; a.textContent=t.viewSrc; p.appendChild(a);} else setText(p,t['q'+n+'p']);
+      }
+      // footer
+      var f=document.querySelector('footer'); setText(f.querySelector('h2'),t.hContact); setText(f.querySelector('.lede'),t.contactLede);
+      var lg=f.querySelectorAll('.legal a'); setText(lg[0],t.terms+' (EN)'); setText(lg[1],t.privacy+' (EN)');
+      $('verify-link').innerHTML=''; $('verify-link').appendChild(document.createTextNode(t.verify+' →'));
+      if(save){try{localStorage.setItem('vm-verify-lang',code);}catch(e){}}
+    }
+    sel.addEventListener('change',function(){apply(sel.value,true);});
+    var init=null; try{init=new URLSearchParams(location.search).get('lang');}catch(e){}
+    if(!init||!H.D[init]){try{init=localStorage.getItem('vm-verify-lang');}catch(e){init=null;}}
+    if(!init||!H.D[init])init=H.pick(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language]);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){apply(init,false);});else apply(init,false);
   })();
   </script>
-
 
   <div class="wrap">
     <div class="hero">
