@@ -19,7 +19,8 @@
     'q6h', 'q6p', 'q7h', 'q7p', 'q8h', 'q8p', 'q9h', 'q9p',
     'viewSrc',
     'hContact', 'contactLede',
-    'terms', 'privacy', 'verify', 'langLabel'
+    'terms', 'privacy', 'verify', 'langLabel',
+    'hFP', 'fpLede', 'f1h', 'f1p', 'f2h', 'f2p', 'openVerify'
   ];
 
   var D = {};
@@ -45,11 +46,12 @@
     'How does on-chain verification work?', 'VaultMemo compares the hash of your saved file against the record actually written to the Solana blockchain. If even one byte has changed, or the file is fake, verification fails.',
     'What is the Encryption Certificate, and how do I use it?', 'Once a memo has been verified, you can instantly generate a security certificate image (PNG) right in the app. It includes your wallet address, the on-chain transaction ID, and the save timestamp — so you can share it, like a business card, as proof that a note existed unaltered at that point in time.',
     'What\'s different about real-time RPC verification?', 'Starting in v1.3.4, VaultMemo compares your saved file\'s hash directly against the live record on the Solana blockchain (RPC). If even a single byte has been changed or tampered with, verification fails immediately, guaranteeing the integrity of your data.',
-    'Do I need to pay a monthly subscription?', 'No. There\'s no subscription at all. You pay a small, one-time fee based on the note\'s size only when you save it. Notes under 200 bytes are free.',
+    'Do I need to pay a monthly subscription?', 'No. There\'s no subscription at all. You pay a small, one-time fee based on the note\'s size only when you save it. Very small notes are free.',
     'VaultMemo says it has no servers, so why does it use Firebase?', 'Firebase Remote Config is used only to push pricing updates and in-app announcements, not to store or process your data. Your memo content, wallet keys, and personal information are never sent to Firebase or any other server.',
     'View source code',
     'Get in touch', 'Questions about VaultMemo, feedback, or partnership inquiries — reach out below.',
-    'Terms of Use', 'Privacy Policy', 'Verify a file', 'Language'
+    'Terms of Use', 'Privacy Policy', 'Verify a file', 'Language',
+    'File Proof', 'Prove that a file existed at a given moment. Only the file\'s fingerprint and the time are recorded on Solana; the file itself is never put on-chain. Each proof is saved as a tamper-evident .vamp file.', 'Check it in any browser', 'Verify a .vam or .vamp record without the app. Nothing is uploaded; your browser compares the file\'s fingerprint with the record on Solana.', 'A technical proof', 'It shows that a file existed at the recorded time. It is not legal notarization.', 'Open the Verify page'
   ];
 
   D.ko = [
@@ -73,11 +75,12 @@
     '온체인 검증은 어떻게 작동하나요?', 'VaultMemo는 저장된 파일의 해시를 Solana 블록체인에 실제로 기록된 값과 비교합니다. 1바이트라도 바뀌었거나 가짜 파일이면 검증이 실패합니다.',
     '암호화 인증서는 무엇이고 어떻게 쓰나요?', '메모를 검증하고 나면 앱에서 바로 보안 인증서 이미지(PNG)를 만들 수 있습니다. 지갑 주소, 온체인 트랜잭션 ID, 저장 시각이 들어 있어서, 그 시점에 메모가 변경 없이 존재했다는 증거로 명함처럼 공유할 수 있습니다.',
     '실시간 RPC 검증은 무엇이 다른가요?', 'v1.3.4부터 VaultMemo는 저장된 파일의 해시를 Solana 블록체인(RPC)의 실시간 기록과 직접 비교합니다. 1바이트라도 바뀌거나 변조되면 즉시 검증이 실패하므로 데이터의 무결성을 보장합니다.',
-    '월 구독료를 내야 하나요?', '아니요. 구독은 전혀 없습니다. 메모를 저장할 때만 크기에 따른 소액을 한 번 냅니다. 200바이트 미만의 메모는 무료입니다.',
+    '월 구독료를 내야 하나요?', '아니요. 구독은 전혀 없습니다. 메모를 저장할 때만 크기에 따른 소액을 한 번 냅니다. 아주 작은 메모는 무료입니다.',
     'VaultMemo는 서버가 없다면서 왜 Firebase를 쓰나요?', 'Firebase Remote Config는 가격 변경과 앱 내 공지를 전달하는 데만 쓰이며, 데이터를 저장하거나 처리하지 않습니다. 메모 내용, 지갑 키, 개인정보는 Firebase나 다른 어떤 서버로도 전송되지 않습니다.',
     '소스 코드 보기',
     '문의하기', 'VaultMemo에 대한 질문, 의견, 제휴 문의는 아래로 연락해 주세요.',
-    '이용약관', '개인정보 처리방침', '파일 검증하기', '언어'
+    '이용약관', '개인정보 처리방침', '파일 검증하기', '언어',
+    '파일 증명', '파일이 특정 시점에 존재했음을 증명합니다. 파일의 지문과 시각만 Solana에 기록되고, 파일 자체는 체인에 올라가지 않습니다. 각 증명은 변조를 감지하는 .vamp 파일로 저장됩니다.', '어느 브라우저에서나 확인', '앱 없이 .vam 또는 .vamp 기록을 검증할 수 있습니다. 아무것도 업로드되지 않으며, 브라우저가 파일의 지문을 Solana의 기록과 비교합니다.', '기술적 증명', '기록된 시각에 그 파일이 존재했음을 보여 줍니다. 법적 공증이 아닙니다.', '검증 페이지 열기'
   ];
 
   D.ja = [
@@ -101,11 +104,12 @@
     'オンチェーン検証はどう動きますか？', 'VaultMemo は、保存したファイルのハッシュを Solana ブロックチェーンに実際に書き込まれた記録と比べます。1バイトでも変わっていたり偽のファイルだったりすると、検証は失敗します。',
     '暗号化証明書とは何で、どう使いますか？', 'メモを検証したあと、アプリですぐにセキュリティ証明書の画像（PNG）を作れます。ウォレットアドレス、オンチェーンのトランザクション ID、保存日時が含まれるので、その時点でメモが変更されずに存在していた証拠として、名刺のように共有できます。',
     'リアルタイム RPC 検証は何が違いますか？', 'v1.3.4 から、VaultMemo は保存したファイルのハッシュを Solana ブロックチェーン（RPC）上の最新の記録と直接比較します。1バイトでも変更や改ざんがあれば直ちに検証が失敗し、データの完全性が保証されます。',
-    '月額のサブスクリプションは必要ですか？', 'いいえ。サブスクリプションは一切ありません。メモを保存するときだけ、サイズに応じた少額を一度支払います。200バイト未満のメモは無料です。',
+    '月額のサブスクリプションは必要ですか？', 'いいえ。サブスクリプションは一切ありません。メモを保存するときだけ、サイズに応じた少額を一度支払います。ごく小さなメモは無料です。',
     'サーバーがないと言いながら、なぜ Firebase を使っているのですか？', 'Firebase Remote Config は料金の更新とアプリ内のお知らせを配信するためだけに使われ、データの保存や処理には使われません。メモの内容、ウォレットの鍵、個人情報が Firebase やほかのサーバーに送られることはありません。',
     'ソースコードを見る',
     'お問い合わせ', 'VaultMemo についてのご質問、ご意見、提携のご相談は、下記までご連絡ください。',
-    '利用規約', 'プライバシーポリシー', 'ファイルを検証', '言語'
+    '利用規約', 'プライバシーポリシー', 'ファイルを検証', '言語',
+    'ファイル証明', 'ファイルがある時点で存在したことを証明します。ファイルのフィンガープリントと時刻だけが Solana に記録され、ファイル自体がオンチェーンに載ることはありません。各証明は、改ざんを検知できる .vamp ファイルとして保存されます。', 'どのブラウザでも確認', 'アプリなしで .vam や .vamp の記録を検証できます。何もアップロードされず、ブラウザがファイルのフィンガープリントを Solana 上の記録と比べます。', '技術的な証明', '記録された時刻にそのファイルが存在したことを示します。法的な公証ではありません。', '検証ページを開く'
   ];
 
   D.zh = [
@@ -129,11 +133,12 @@
     '链上验证是如何工作的？', 'VaultMemo 会把你保存的文件的哈希与实际写入 Solana 区块链的记录进行比对。哪怕只有一个字节发生变化，或者文件是伪造的，验证都会失败。',
     '什么是加密证书，如何使用？', '笔记验证通过后，你可以在应用内立即生成一张安全证书图片（PNG）。其中包含你的钱包地址、链上交易 ID 和保存时间，你可以像名片一样分享它，作为该笔记在那一刻未被改动而存在的证明。',
     '实时 RPC 验证有什么不同？', '从 v1.3.4 开始，VaultMemo 直接把你保存的文件的哈希与 Solana 区块链（RPC）上的实时记录比对。只要有一个字节被改动或篡改，验证就会立即失败，从而保证数据的完整性。',
-    '需要按月订阅付费吗？', '不需要。完全没有订阅。只有在保存笔记时才按笔记大小一次性支付少量费用。小于 200 字节的笔记免费。',
+    '需要按月订阅付费吗？', '不需要。完全没有订阅。只有在保存笔记时才按笔记大小一次性支付少量费用。非常小的笔记免费。',
     'VaultMemo 说没有服务器，为什么还用 Firebase？', 'Firebase Remote Config 只用于推送价格更新和应用内公告，不用于存储或处理你的数据。你的笔记内容、钱包密钥和个人信息绝不会发送到 Firebase 或任何其他服务器。',
     '查看源代码',
     '联系我们', '关于 VaultMemo 的问题、反馈或合作咨询，请通过下面的方式联系我们。',
-    '使用条款', '隐私政策', '验证文件', '语言'
+    '使用条款', '隐私政策', '验证文件', '语言',
+    '文件证明', '证明某个文件在特定时刻存在过。只有文件的指纹和时间会记录在 Solana 上，文件本身绝不会上链。每份证明都保存为可发现篡改的 .vamp 文件。', '在任何浏览器中检查', '无需应用即可验证 .vam 或 .vamp 记录。不会上传任何内容，浏览器会把文件的指纹与 Solana 上的记录进行比对。', '技术性证明', '它表明某个文件在记录的时间存在过。这不是法律公证。', '打开验证页面'
   ];
 
   D['zh-TW'] = [
@@ -157,11 +162,12 @@
     '鏈上驗證是如何運作的？', 'VaultMemo 會把你儲存的檔案的雜湊與實際寫入 Solana 區塊鏈的記錄進行比對。即使只有一個位元組發生變化，或檔案是偽造的，驗證都會失敗。',
     '什麼是加密憑證，如何使用？', '筆記驗證通過後，你可以在應用程式內立即產生一張安全憑證圖片（PNG）。其中包含你的錢包位址、鏈上交易 ID 和儲存時間，你可以像名片一樣分享它，作為該筆記在那一刻未被更動而存在的證明。',
     '即時 RPC 驗證有什麼不同？', '從 v1.3.4 開始，VaultMemo 直接把你儲存的檔案的雜湊與 Solana 區塊鏈（RPC）上的即時記錄比對。只要有一個位元組被更動或竄改，驗證就會立即失敗，從而保證資料的完整性。',
-    '需要按月訂閱付費嗎？', '不需要。完全沒有訂閱。只有在儲存筆記時才依筆記大小一次性支付少量費用。小於 200 位元組的筆記免費。',
+    '需要按月訂閱付費嗎？', '不需要。完全沒有訂閱。只有在儲存筆記時才依筆記大小一次性支付少量費用。非常小的筆記免費。',
     'VaultMemo 說沒有伺服器，為什麼還用 Firebase？', 'Firebase Remote Config 只用於推送價格更新和應用程式內公告，不用於儲存或處理你的資料。你的筆記內容、錢包金鑰和個人資訊絕不會傳送到 Firebase 或任何其他伺服器。',
     '查看原始碼',
     '聯絡我們', '關於 VaultMemo 的問題、意見或合作洽詢，請透過下方方式與我們聯絡。',
-    '使用條款', '隱私權政策', '驗證檔案', '語言'
+    '使用條款', '隱私權政策', '驗證檔案', '語言',
+    '檔案證明', '證明某個檔案在特定時刻存在過。只有檔案的指紋和時間會記錄在 Solana 上，檔案本身絕不會上鏈。每份證明都儲存為可發現竄改的 .vamp 檔案。', '在任何瀏覽器中檢查', '無需應用程式即可驗證 .vam 或 .vamp 記錄。不會上傳任何內容，瀏覽器會把檔案的指紋與 Solana 上的記錄進行比對。', '技術性證明', '它顯示某個檔案在記錄的時間存在過。這不是法律公證。', '開啟驗證頁面'
   ];
 
   D.de = [
@@ -185,11 +191,12 @@
     'Wie funktioniert die On-Chain-Prüfung?', 'VaultMemo vergleicht den Hash deiner gespeicherten Datei mit dem Eintrag, der tatsächlich in die Solana-Blockchain geschrieben wurde. Hat sich auch nur ein Byte geändert oder ist die Datei gefälscht, schlägt die Prüfung fehl.',
     'Was ist das Verschlüsselungszertifikat und wie nutze ich es?', 'Nach der Prüfung einer Notiz kannst du direkt in der App ein Sicherheitszertifikat als Bild (PNG) erstellen. Es enthält deine Wallet-Adresse, die On-Chain-Transaktions-ID und den Speicherzeitpunkt – du kannst es wie eine Visitenkarte teilen, als Beleg, dass die Notiz zu diesem Zeitpunkt unverändert existierte.',
     'Was ist an der Echtzeit-RPC-Prüfung anders?', 'Seit v1.3.4 vergleicht VaultMemo den Hash deiner gespeicherten Datei direkt mit dem aktuellen Eintrag in der Solana-Blockchain (RPC). Wurde auch nur ein Byte geändert oder manipuliert, schlägt die Prüfung sofort fehl – das garantiert die Integrität deiner Daten.',
-    'Muss ich ein monatliches Abo bezahlen?', 'Nein. Es gibt gar kein Abo. Du zahlst nur beim Speichern einer Notiz eine kleine Einmalgebühr, die von ihrer Größe abhängt. Notizen unter 200 Bytes sind kostenlos.',
+    'Muss ich ein monatliches Abo bezahlen?', 'Nein. Es gibt gar kein Abo. Du zahlst nur beim Speichern einer Notiz eine kleine Einmalgebühr, die von ihrer Größe abhängt. Sehr kleine Notizen sind kostenlos.',
     'VaultMemo sagt, es hat keine Server – warum nutzt es dann Firebase?', 'Firebase Remote Config dient nur dazu, Preisänderungen und In-App-Hinweise auszuliefern, nicht zum Speichern oder Verarbeiten deiner Daten. Dein Notizinhalt, deine Wallet-Schlüssel und persönliche Daten werden nie an Firebase oder einen anderen Server gesendet.',
     'Quellcode ansehen',
     'Kontakt', 'Fragen zu VaultMemo, Feedback oder Kooperationsanfragen – melde dich unten.',
-    'Nutzungsbedingungen', 'Datenschutzerklärung', 'Datei prüfen', 'Sprache'
+    'Nutzungsbedingungen', 'Datenschutzerklärung', 'Datei prüfen', 'Sprache',
+    'Dateinachweis', 'Beweise, dass eine Datei zu einem bestimmten Zeitpunkt existierte. Nur der Fingerabdruck der Datei und die Uhrzeit werden auf Solana erfasst; die Datei selbst kommt nie on-chain. Jeder Nachweis wird als manipulationserkennbare .vamp-Datei gespeichert.', 'In jedem Browser prüfen', 'Prüfe einen .vam- oder .vamp-Eintrag ohne die App. Es wird nichts hochgeladen; dein Browser vergleicht den Fingerabdruck der Datei mit dem Eintrag auf Solana.', 'Ein technischer Nachweis', 'Er zeigt, dass eine Datei zum erfassten Zeitpunkt existierte. Er ist keine rechtliche Beurkundung.', 'Prüfseite öffnen'
   ];
 
   D.es = [
@@ -213,11 +220,12 @@
     '¿Cómo funciona la verificación en la cadena?', 'VaultMemo compara el hash de tu archivo guardado con el registro realmente escrito en la blockchain de Solana. Si ha cambiado aunque sea un byte, o el archivo es falso, la verificación falla.',
     '¿Qué es el Certificado de cifrado y cómo se usa?', 'Una vez verificado un memo, puedes generar al instante una imagen de certificado de seguridad (PNG) en la propia app. Incluye la dirección de tu wallet, el ID de la transacción en la cadena y la fecha de guardado, para que puedas compartirlo como una tarjeta de visita, como prueba de que una nota existía sin alterar en ese momento.',
     '¿Qué tiene de distinta la verificación RPC en tiempo real?', 'Desde la v1.3.4, VaultMemo compara el hash de tu archivo guardado directamente con el registro en vivo de la blockchain de Solana (RPC). Si se cambia o manipula aunque sea un solo byte, la verificación falla al instante, lo que garantiza la integridad de tus datos.',
-    '¿Tengo que pagar una suscripción mensual?', 'No. No hay ninguna suscripción. Pagas una pequeña tarifa única según el tamaño de la nota solo cuando la guardas. Las notas de menos de 200 bytes son gratis.',
+    '¿Tengo que pagar una suscripción mensual?', 'No. No hay ninguna suscripción. Pagas una pequeña tarifa única según el tamaño de la nota solo cuando la guardas. Las notas muy pequeñas son gratis.',
     'VaultMemo dice que no tiene servidores, ¿por qué usa Firebase?', 'Firebase Remote Config se usa solo para enviar cambios de precios y avisos dentro de la app, no para almacenar ni procesar tus datos. El contenido de tus memos, las claves de tu wallet y tu información personal nunca se envían a Firebase ni a ningún otro servidor.',
     'Ver el código fuente',
     'Contacto', 'Preguntas sobre VaultMemo, comentarios o propuestas de colaboración: escríbenos abajo.',
-    'Términos de uso', 'Política de privacidad', 'Verificar un archivo', 'Idioma'
+    'Términos de uso', 'Política de privacidad', 'Verificar un archivo', 'Idioma',
+    'Prueba de archivo', 'Demuestra que un archivo existía en un momento dado. Solo la huella del archivo y la hora se registran en Solana; el archivo en sí nunca va a la cadena. Cada prueba se guarda como un archivo .vamp que detecta manipulaciones.', 'Compruébalo en cualquier navegador', 'Verifica un registro .vam o .vamp sin la app. No se sube nada; tu navegador compara la huella del archivo con el registro en Solana.', 'Una prueba técnica', 'Muestra que un archivo existía en el momento registrado. No es una notarización legal.', 'Abrir la página de verificación'
   ];
 
   D.fr = [
@@ -241,11 +249,12 @@
     'Comment fonctionne la vérification sur la blockchain ?', 'VaultMemo compare le hash de votre fichier enregistré avec l\'enregistrement réellement écrit sur la blockchain Solana. Si ne serait-ce qu\'un octet a changé, ou si le fichier est faux, la vérification échoue.',
     'Qu\'est-ce que le Certificat de chiffrement et comment l\'utiliser ?', 'Une fois un mémo vérifié, vous pouvez générer instantanément dans l\'application une image de certificat de sécurité (PNG). Elle contient l\'adresse de votre wallet, l\'ID de la transaction on-chain et l\'horodatage de l\'enregistrement : vous pouvez la partager comme une carte de visite, preuve qu\'une note existait, inchangée, à ce moment-là.',
     'Qu\'a de différent la vérification RPC en temps réel ?', 'Depuis la v1.3.4, VaultMemo compare le hash de votre fichier enregistré directement avec l\'enregistrement en direct de la blockchain Solana (RPC). Si un seul octet a été modifié ou altéré, la vérification échoue immédiatement, ce qui garantit l\'intégrité de vos données.',
-    'Dois-je payer un abonnement mensuel ?', 'Non. Il n\'y a aucun abonnement. Vous payez un petit tarif unique, selon la taille de la note, uniquement lorsque vous l\'enregistrez. Les notes de moins de 200 octets sont gratuites.',
+    'Dois-je payer un abonnement mensuel ?', 'Non. Il n\'y a aucun abonnement. Vous payez un petit tarif unique, selon la taille de la note, uniquement lorsque vous l\'enregistrez. Les notes très petites sont gratuites.',
     'VaultMemo dit ne pas avoir de serveurs, alors pourquoi utilise-t-il Firebase ?', 'Firebase Remote Config sert uniquement à diffuser les changements de prix et les annonces dans l\'application, pas à stocker ni traiter vos données. Le contenu de vos mémos, vos clés de wallet et vos informations personnelles ne sont jamais envoyés à Firebase ni à aucun autre serveur.',
     'Voir le code source',
     'Nous contacter', 'Questions sur VaultMemo, retours ou demandes de partenariat : écrivez-nous ci-dessous.',
-    'Conditions d\'utilisation', 'Politique de confidentialité', 'Vérifier un fichier', 'Langue'
+    'Conditions d\'utilisation', 'Politique de confidentialité', 'Vérifier un fichier', 'Langue',
+    'Preuve de fichier', 'Prouvez qu\'un fichier existait à un moment donné. Seules l\'empreinte du fichier et l\'heure sont enregistrées sur Solana ; le fichier lui-même n\'est jamais mis sur la blockchain. Chaque preuve est enregistrée dans un fichier .vamp qui détecte toute modification.', 'Vérifiez dans n\'importe quel navigateur', 'Vérifiez un enregistrement .vam ou .vamp sans l\'application. Rien n\'est envoyé ; votre navigateur compare l\'empreinte du fichier avec l\'enregistrement sur Solana.', 'Une preuve technique', 'Elle montre qu\'un fichier existait à l\'heure enregistrée. Ce n\'est pas une authentification juridique.', 'Ouvrir la page de vérification'
   ];
 
   D.it = [
@@ -269,11 +278,12 @@
     'Come funziona la verifica on-chain?', 'VaultMemo confronta l\'hash del tuo file salvato con la registrazione effettivamente scritta sulla blockchain di Solana. Se è cambiato anche un solo byte, o il file è falso, la verifica fallisce.',
     'Cos\'è il Certificato di cifratura e come si usa?', 'Dopo aver verificato un memo, puoi generare subito nell\'app un\'immagine di certificato di sicurezza (PNG). Include l\'indirizzo del tuo wallet, l\'ID della transazione on-chain e l\'orario di salvataggio, così puoi condividerlo come un biglietto da visita, come prova che una nota esisteva inalterata in quel momento.',
     'Cosa cambia con la verifica RPC in tempo reale?', 'Dalla v1.3.4, VaultMemo confronta l\'hash del tuo file salvato direttamente con la registrazione in tempo reale sulla blockchain di Solana (RPC). Se anche un solo byte è stato modificato o manomesso, la verifica fallisce subito, garantendo l\'integrità dei tuoi dati.',
-    'Devo pagare un abbonamento mensile?', 'No. Non c\'è alcun abbonamento. Paghi una piccola tariffa una tantum, in base alla dimensione della nota, solo quando la salvi. Le note sotto i 200 byte sono gratuite.',
+    'Devo pagare un abbonamento mensile?', 'No. Non c\'è alcun abbonamento. Paghi una piccola tariffa una tantum, in base alla dimensione della nota, solo quando la salvi. Le note molto piccole sono gratuite.',
     'VaultMemo dice di non avere server, perché usa Firebase?', 'Firebase Remote Config serve solo a inviare aggiornamenti dei prezzi e avvisi nell\'app, non a salvare o elaborare i tuoi dati. Il contenuto dei memo, le chiavi del wallet e i dati personali non vengono mai inviati a Firebase né ad altri server.',
     'Vedi il codice sorgente',
     'Contatti', 'Domande su VaultMemo, feedback o richieste di collaborazione: scrivici qui sotto.',
-    'Termini di utilizzo', 'Informativa sulla privacy', 'Verifica un file', 'Lingua'
+    'Termini di utilizzo', 'Informativa sulla privacy', 'Verifica un file', 'Lingua',
+    'Prova di file', 'Dimostra che un file esisteva in un dato momento. Solo l\'impronta del file e l\'ora vengono registrate su Solana; il file stesso non va mai on-chain. Ogni prova è salvata come file .vamp che rileva le manomissioni.', 'Controlla da qualsiasi browser', 'Verifica una registrazione .vam o .vamp senza l\'app. Non viene caricato nulla; il tuo browser confronta l\'impronta del file con la registrazione su Solana.', 'Una prova tecnica', 'Mostra che un file esisteva all\'ora registrata. Non è una notarizzazione legale.', 'Apri la pagina di verifica'
   ];
 
   D.pt = [
@@ -297,11 +307,12 @@
     'Como funciona a verificação na blockchain?', 'O VaultMemo compara o hash do seu arquivo salvo com o registro realmente gravado na blockchain da Solana. Se mudou até um único byte, ou se o arquivo é falso, a verificação falha.',
     'O que é o Certificado de criptografia e como uso?', 'Depois que um memo é verificado, você pode gerar na hora, no próprio app, uma imagem de certificado de segurança (PNG). Ela inclui o endereço da sua carteira, o ID da transação na blockchain e o horário do salvamento, para que você a compartilhe como um cartão de visita, como prova de que a nota existia inalterada naquele momento.',
     'O que muda na verificação RPC em tempo real?', 'A partir da v1.3.4, o VaultMemo compara o hash do seu arquivo salvo diretamente com o registro ao vivo na blockchain da Solana (RPC). Se um único byte for alterado ou adulterado, a verificação falha imediatamente, garantindo a integridade dos seus dados.',
-    'Preciso pagar uma assinatura mensal?', 'Não. Não há assinatura alguma. Você paga uma pequena taxa única, conforme o tamanho da nota, apenas quando a salva. Notas com menos de 200 bytes são gratuitas.',
+    'Preciso pagar uma assinatura mensal?', 'Não. Não há assinatura alguma. Você paga uma pequena taxa única, conforme o tamanho da nota, apenas quando a salva. Notas muito pequenas são gratuitas.',
     'O VaultMemo diz que não tem servidores, então por que usa o Firebase?', 'O Firebase Remote Config é usado apenas para enviar atualizações de preços e avisos dentro do app, não para guardar ou processar seus dados. O conteúdo dos memos, as chaves da carteira e suas informações pessoais nunca são enviados ao Firebase nem a qualquer outro servidor.',
     'Ver o código-fonte',
     'Fale conosco', 'Dúvidas sobre o VaultMemo, comentários ou propostas de parceria: entre em contato abaixo.',
-    'Termos de uso', 'Política de privacidade', 'Verificar um arquivo', 'Idioma'
+    'Termos de uso', 'Política de privacidade', 'Verificar um arquivo', 'Idioma',
+    'Prova de arquivo', 'Prove que um arquivo existia em um determinado momento. Somente a impressão digital do arquivo e a hora são registradas na Solana; o arquivo em si nunca vai para a blockchain. Cada prova é salva como um arquivo .vamp que detecta adulteração.', 'Confira em qualquer navegador', 'Verifique um registro .vam ou .vamp sem o app. Nada é enviado; seu navegador compara a impressão digital do arquivo com o registro na Solana.', 'Uma prova técnica', 'Ela mostra que um arquivo existia no horário registrado. Não é autenticação jurídica.', 'Abrir a página de verificação'
   ];
 
   D.ru = [
@@ -325,11 +336,12 @@
     'Как работает проверка в блокчейне?', 'VaultMemo сравнивает хеш вашего сохранённого файла с записью, реально внесённой в блокчейн Solana. Если изменился хотя бы один байт или файл поддельный, проверка не пройдёт.',
     'Что такое сертификат шифрования и как им пользоваться?', 'После проверки заметки вы можете сразу создать в приложении изображение сертификата безопасности (PNG). В нём указаны адрес вашего кошелька, ID транзакции в блокчейне и время сохранения — им можно делиться, как визиткой, как доказательством того, что заметка существовала в неизменном виде в тот момент.',
     'Чем отличается проверка RPC в реальном времени?', 'Начиная с версии 1.3.4 VaultMemo сравнивает хеш вашего сохранённого файла напрямую с актуальной записью в блокчейне Solana (RPC). Если изменён или подделан хотя бы один байт, проверка сразу не проходит, что гарантирует целостность ваших данных.',
-    'Нужно ли платить ежемесячную подписку?', 'Нет. Подписки нет вообще. Вы платите небольшую разовую плату, зависящую от размера заметки, только при её сохранении. Заметки меньше 200 байт бесплатны.',
+    'Нужно ли платить ежемесячную подписку?', 'Нет. Подписки нет вообще. Вы платите небольшую разовую плату, зависящую от размера заметки, только при её сохранении. Совсем маленькие заметки бесплатны.',
     'VaultMemo говорит, что у него нет серверов, так почему он использует Firebase?', 'Firebase Remote Config используется только для передачи изменений цен и сообщений в приложении, а не для хранения или обработки ваших данных. Содержимое заметок, ключи кошелька и личные данные никогда не отправляются в Firebase или на любой другой сервер.',
     'Посмотреть исходный код',
     'Связаться с нами', 'Вопросы о VaultMemo, отзывы или предложения о сотрудничестве — пишите ниже.',
-    'Условия использования', 'Политика конфиденциальности', 'Проверить файл', 'Язык'
+    'Условия использования', 'Политика конфиденциальности', 'Проверить файл', 'Язык',
+    'Подтверждение файла', 'Докажите, что файл существовал в определённый момент. В Solana записываются только отпечаток файла и время; сам файл никогда не попадает в блокчейн. Каждое подтверждение сохраняется как файл .vamp, выявляющий изменения.', 'Проверка в любом браузере', 'Проверяйте запись .vam или .vamp без приложения. Ничего не загружается; ваш браузер сравнивает отпечаток файла с записью в Solana.', 'Техническое доказательство', 'Оно показывает, что файл существовал в записанное время. Это не нотариальное заверение.', 'Открыть страницу проверки'
   ];
 
   D.tr = [
@@ -353,11 +365,12 @@
     'Zincir üstü doğrulama nasıl çalışır?', 'VaultMemo, kaydettiğiniz dosyanın hash\'ini Solana blokzincirine gerçekten yazılmış kayıtla karşılaştırır. Tek bir bayt bile değiştiyse ya da dosya sahteyse doğrulama başarısız olur.',
     'Şifreleme Sertifikası nedir ve nasıl kullanılır?', 'Bir not doğrulandıktan sonra uygulamada hemen bir güvenlik sertifikası görseli (PNG) oluşturabilirsiniz. Cüzdan adresinizi, zincir üstü işlem kimliğini ve kayıt zamanını içerir; böylece notun o anda değişmeden var olduğunun kanıtı olarak bir kartvizit gibi paylaşabilirsiniz.',
     'Gerçek zamanlı RPC doğrulamasında ne farklı?', 'v1.3.4\'ten itibaren VaultMemo, kaydettiğiniz dosyanın hash\'ini doğrudan Solana blokzincirindeki (RPC) canlı kayıtla karşılaştırır. Tek bir bayt bile değiştirilir veya kurcalanırsa doğrulama anında başarısız olur ve verinizin bütünlüğü garanti edilir.',
-    'Aylık abonelik ödemem gerekir mi?', 'Hayır. Hiç abonelik yok. Yalnızca bir notu kaydederken, notun boyutuna göre küçük bir tek seferlik ücret ödersiniz. 200 baytın altındaki notlar ücretsizdir.',
+    'Aylık abonelik ödemem gerekir mi?', 'Hayır. Hiç abonelik yok. Yalnızca bir notu kaydederken, notun boyutuna göre küçük bir tek seferlik ücret ödersiniz. Çok küçük notlar ücretsizdir.',
     'VaultMemo sunucusu olmadığını söylüyor, peki neden Firebase kullanıyor?', 'Firebase Remote Config yalnızca fiyat güncellemelerini ve uygulama içi duyuruları iletmek için kullanılır; verilerinizi saklamak veya işlemek için değil. Not içeriğiniz, cüzdan anahtarlarınız ve kişisel bilgileriniz Firebase\'e ya da başka bir sunucuya asla gönderilmez.',
     'Kaynak kodunu görüntüle',
     'İletişim', 'VaultMemo hakkında sorular, geri bildirim veya ortaklık talepleri için aşağıdan ulaşın.',
-    'Kullanım Koşulları', 'Gizlilik Politikası', 'Dosya doğrula', 'Dil'
+    'Kullanım Koşulları', 'Gizlilik Politikası', 'Dosya doğrula', 'Dil',
+    'Dosya Kanıtı', 'Bir dosyanın belirli bir anda var olduğunu kanıtlayın. Solana\'ya yalnızca dosyanın parmak izi ve zaman kaydedilir; dosyanın kendisi asla zincire konmaz. Her kanıt, kurcalamayı fark eden bir .vamp dosyası olarak kaydedilir.', 'Herhangi bir tarayıcıda kontrol edin', 'Uygulama olmadan bir .vam veya .vamp kaydını doğrulayın. Hiçbir şey yüklenmez; tarayıcınız dosyanın parmak izini Solana\'daki kayıtla karşılaştırır.', 'Teknik bir kanıt', 'Bir dosyanın kaydedilen zamanda var olduğunu gösterir. Hukuki tasdik değildir.', 'Doğrulama sayfasını aç'
   ];
 
   D.vi = [
@@ -381,11 +394,12 @@
     'Việc xác minh trên chuỗi hoạt động thế nào?', 'VaultMemo so sánh hash của tệp bạn đã lưu với bản ghi thực sự được ghi trên blockchain Solana. Nếu dù chỉ một byte thay đổi, hoặc tệp là giả, việc xác minh sẽ thất bại.',
     'Chứng nhận mã hóa là gì và dùng thế nào?', 'Sau khi một ghi chú được xác minh, bạn có thể tạo ngay một hình ảnh chứng nhận bảo mật (PNG) trong ứng dụng. Nó gồm địa chỉ ví, ID giao dịch trên chuỗi và thời điểm lưu, để bạn chia sẻ như một danh thiếp, làm bằng chứng rằng ghi chú đã tồn tại nguyên vẹn vào thời điểm đó.',
     'Xác minh RPC theo thời gian thực khác gì?', 'Từ v1.3.4, VaultMemo so sánh hash của tệp bạn đã lưu trực tiếp với bản ghi trực tiếp trên blockchain Solana (RPC). Nếu dù chỉ một byte bị thay đổi hoặc can thiệp, việc xác minh thất bại ngay lập tức, đảm bảo tính toàn vẹn dữ liệu của bạn.',
-    'Tôi có phải trả phí đăng ký hằng tháng không?', 'Không. Hoàn toàn không có gói đăng ký. Bạn chỉ trả một khoản phí nhỏ một lần, tùy theo kích thước ghi chú, khi lưu. Ghi chú dưới 200 byte được miễn phí.',
+    'Tôi có phải trả phí đăng ký hằng tháng không?', 'Không. Hoàn toàn không có gói đăng ký. Bạn chỉ trả một khoản phí nhỏ một lần, tùy theo kích thước ghi chú, khi lưu. Ghi chú rất nhỏ được miễn phí.',
     'VaultMemo nói không có máy chủ, vậy tại sao lại dùng Firebase?', 'Firebase Remote Config chỉ được dùng để gửi cập nhật giá và thông báo trong ứng dụng, không dùng để lưu hay xử lý dữ liệu của bạn. Nội dung ghi chú, khóa ví và thông tin cá nhân của bạn không bao giờ được gửi đến Firebase hay bất kỳ máy chủ nào khác.',
     'Xem mã nguồn',
     'Liên hệ', 'Câu hỏi về VaultMemo, góp ý hoặc đề xuất hợp tác — hãy liên hệ bên dưới.',
-    'Điều khoản sử dụng', 'Chính sách quyền riêng tư', 'Xác minh tệp', 'Ngôn ngữ'
+    'Điều khoản sử dụng', 'Chính sách quyền riêng tư', 'Xác minh tệp', 'Ngôn ngữ',
+    'Bằng chứng tệp', 'Chứng minh một tệp đã tồn tại vào một thời điểm nhất định. Chỉ dấu vân tay của tệp và thời gian được ghi trên Solana; bản thân tệp không bao giờ được đưa lên chuỗi. Mỗi bằng chứng được lưu thành một tệp .vamp có thể phát hiện việc bị sửa đổi.', 'Kiểm tra trên bất kỳ trình duyệt nào', 'Xác minh bản ghi .vam hoặc .vamp mà không cần ứng dụng. Không có gì được tải lên; trình duyệt của bạn so sánh dấu vân tay của tệp với bản ghi trên Solana.', 'Một bằng chứng kỹ thuật', 'Nó cho thấy một tệp đã tồn tại vào thời điểm được ghi. Đây không phải công chứng pháp lý.', 'Mở trang xác minh'
   ];
 
   D.id = [
@@ -409,11 +423,12 @@
     'Bagaimana cara kerja verifikasi on-chain?', 'VaultMemo membandingkan hash berkas yang Anda simpan dengan catatan yang benar-benar tertulis di blockchain Solana. Jika satu byte saja berubah, atau berkasnya palsu, verifikasi gagal.',
     'Apa itu Sertifikat Enkripsi dan bagaimana menggunakannya?', 'Setelah memo diverifikasi, Anda bisa langsung membuat gambar sertifikat keamanan (PNG) di aplikasi. Isinya alamat dompet, ID transaksi on-chain, dan waktu penyimpanan, sehingga Anda bisa membagikannya seperti kartu nama, sebagai bukti bahwa catatan itu ada tanpa perubahan pada saat itu.',
     'Apa bedanya verifikasi RPC waktu nyata?', 'Mulai v1.3.4, VaultMemo membandingkan hash berkas yang Anda simpan langsung dengan catatan terkini di blockchain Solana (RPC). Jika satu byte saja diubah atau dimanipulasi, verifikasi langsung gagal, menjamin integritas data Anda.',
-    'Apakah saya perlu membayar langganan bulanan?', 'Tidak. Sama sekali tidak ada langganan. Anda hanya membayar biaya kecil sekali bayar sesuai ukuran catatan saat menyimpannya. Catatan di bawah 200 byte gratis.',
+    'Apakah saya perlu membayar langganan bulanan?', 'Tidak. Sama sekali tidak ada langganan. Anda hanya membayar biaya kecil sekali bayar sesuai ukuran catatan saat menyimpannya. Catatan yang sangat kecil gratis.',
     'VaultMemo bilang tidak punya server, lalu mengapa memakai Firebase?', 'Firebase Remote Config hanya dipakai untuk mengirim pembaruan harga dan pengumuman dalam aplikasi, bukan untuk menyimpan atau memproses data Anda. Isi memo, kunci dompet, dan informasi pribadi Anda tidak pernah dikirim ke Firebase atau server lain mana pun.',
     'Lihat kode sumber',
     'Hubungi kami', 'Pertanyaan tentang VaultMemo, masukan, atau ajakan kerja sama — hubungi kami di bawah.',
-    'Ketentuan Penggunaan', 'Kebijakan Privasi', 'Verifikasi berkas', 'Bahasa'
+    'Ketentuan Penggunaan', 'Kebijakan Privasi', 'Verifikasi berkas', 'Bahasa',
+    'Bukti Berkas', 'Buktikan bahwa sebuah berkas ada pada waktu tertentu. Hanya sidik jari berkas dan waktunya yang dicatat di Solana; berkasnya sendiri tidak pernah dimasukkan ke on-chain. Setiap bukti disimpan sebagai berkas .vamp yang dapat mendeteksi perubahan.', 'Periksa di browser apa pun', 'Verifikasi catatan .vam atau .vamp tanpa aplikasi. Tidak ada yang diunggah; browser Anda membandingkan sidik jari berkas dengan catatan di Solana.', 'Bukti teknis', 'Ini menunjukkan bahwa sebuah berkas ada pada waktu yang dicatat. Ini bukan pengesahan hukum.', 'Buka halaman verifikasi'
   ];
 
   D.hi = [
@@ -437,11 +452,12 @@
     'ऑन-चेन सत्यापन कैसे काम करता है?', 'VaultMemo आपकी सेव की गई फ़ाइल के हैश की तुलना Solana ब्लॉकचेन पर वास्तव में लिखे रिकॉर्ड से करता है। अगर एक बाइट भी बदली हो, या फ़ाइल नकली हो, तो सत्यापन विफल हो जाता है।',
     'एन्क्रिप्शन सर्टिफ़िकेट क्या है और इसे कैसे इस्तेमाल करें?', 'मेमो सत्यापित होने के बाद आप ऐप में ही तुरंत एक सुरक्षा सर्टिफ़िकेट इमेज (PNG) बना सकते हैं। इसमें आपका वॉलेट पता, ऑन-चेन ट्रांज़ैक्शन ID और सेव का समय होता है, जिसे आप विज़िटिंग कार्ड की तरह साझा कर सकते हैं, इस प्रमाण के रूप में कि उस समय नोट बिना बदलाव के मौजूद था।',
     'रियल-टाइम RPC सत्यापन में क्या अलग है?', 'v1.3.4 से VaultMemo आपकी सेव की गई फ़ाइल के हैश की सीधी तुलना Solana ब्लॉकचेन (RPC) के लाइव रिकॉर्ड से करता है। अगर एक बाइट भी बदली या छेड़छाड़ की गई हो, तो सत्यापन तुरंत विफल हो जाता है, जिससे आपके डेटा की अखंडता सुनिश्चित होती है।',
-    'क्या मुझे मासिक सब्सक्रिप्शन देना होगा?', 'नहीं। कोई सब्सक्रिप्शन है ही नहीं। आप केवल नोट सेव करते समय उसके आकार के अनुसार एक छोटा एकमुश्त शुल्क देते हैं। 200 बाइट से छोटे नोट मुफ़्त हैं।',
+    'क्या मुझे मासिक सब्सक्रिप्शन देना होगा?', 'नहीं। कोई सब्सक्रिप्शन है ही नहीं। आप केवल नोट सेव करते समय उसके आकार के अनुसार एक छोटा एकमुश्त शुल्क देते हैं। बहुत छोटे नोट मुफ़्त हैं।',
     'VaultMemo कहता है कि उसके पास कोई सर्वर नहीं, तो वह Firebase क्यों इस्तेमाल करता है?', 'Firebase Remote Config का उपयोग केवल कीमतों के अपडेट और ऐप-भीतर घोषणाएँ भेजने के लिए होता है, आपका डेटा रखने या प्रोसेस करने के लिए नहीं। आपके मेमो की सामग्री, वॉलेट कुंजियाँ और निजी जानकारी कभी Firebase या किसी अन्य सर्वर को नहीं भेजी जातीं।',
     'सोर्स कोड देखें',
     'संपर्क करें', 'VaultMemo के बारे में प्रश्न, प्रतिक्रिया या साझेदारी के लिए नीचे संपर्क करें।',
-    'उपयोग की शर्तें', 'गोपनीयता नीति', 'फ़ाइल सत्यापित करें', 'भाषा'
+    'उपयोग की शर्तें', 'गोपनीयता नीति', 'फ़ाइल सत्यापित करें', 'भाषा',
+    'फ़ाइल प्रूफ़', 'साबित करें कि कोई फ़ाइल किसी खास पल में मौजूद थी। Solana पर केवल फ़ाइल का फ़िंगरप्रिंट और समय दर्ज होता है; फ़ाइल खुद कभी ऑन-चेन नहीं जाती। हर प्रमाण छेड़छाड़ पकड़ने वाली .vamp फ़ाइल के रूप में सेव होता है।', 'किसी भी ब्राउज़र में जाँचें', 'ऐप के बिना .vam या .vamp रिकॉर्ड सत्यापित करें। कुछ भी अपलोड नहीं होता; आपका ब्राउज़र फ़ाइल के फ़िंगरप्रिंट की तुलना Solana के रिकॉर्ड से करता है।', 'एक तकनीकी प्रमाण', 'यह दिखाता है कि दर्ज समय पर वह फ़ाइल मौजूद थी। यह कानूनी नोटरीकरण नहीं है।', 'सत्यापन पेज खोलें'
   ];
 
   var ORDER = ['en', 'ko', 'ja', 'zh', 'zh-TW', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'tr', 'vi', 'id', 'hi'];

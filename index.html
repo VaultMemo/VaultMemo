@@ -49,7 +49,7 @@ footer{padding:72px 0 88px}
 <body>
 
   <div class="topbar"><div class="wrap bar"><span class="lang"><span aria-hidden="true">&#127760;</span> <select id="lang" aria-label="Language"></select></span><a id="verify-link" href="verify.html">Verify a file &rarr;</a></div></div>
-  <script src="home-i18n.js?v=2"></script>
+  <script src="home-i18n.js?v=3"></script>
   <script>
   (function(){
     var H=window.VMHome, $=function(id){return document.getElementById(id);};
@@ -63,12 +63,16 @@ footer{padding:72px 0 88px}
       // section 1: what it does
       setText(secs[0].querySelector('h2'),t.hWhat); setText(secs[0].querySelector('.lede'),t.lede);
       var cards=secs[0].querySelectorAll('.card'); [1,2,3,4].forEach(function(n,i){setText(cards[i].querySelector('h3'),t['c'+n+'h']);setText(cards[i].querySelector('p'),t['c'+n+'p']);});
-      // section 2: how it works
-      setText(secs[1].querySelector('h2'),t.hHow);
-      var st=secs[1].querySelectorAll('.step-body'); [1,2,3].forEach(function(n,i){setText(st[i].querySelector('h3'),t['s'+n+'h']);setText(st[i].querySelector('p'),t['s'+n+'p']);});
-      // section 3: FAQ
-      setText(secs[2].querySelector('h2'),t.hFaq); setText(secs[2].querySelector('.lede'),t.faqLede);
-      var q=secs[2].querySelectorAll('.step-body'); for(var n=1;n<=9;n++){
+      // section 2: file proof
+      setText(secs[1].querySelector('h2'),t.hFP); setText(secs[1].querySelector('.lede'),t.fpLede);
+      var fc=secs[1].querySelectorAll('.card'); setText(fc[0].querySelector('h3'),t.f1h); setText(fc[0].querySelector('p'),t.f1p); setText(fc[1].querySelector('h3'),t.f2h); setText(fc[1].querySelector('p'),t.f2p);
+      $('fp-open').textContent=t.openVerify+' \u2192';
+      // section 3: how it works
+      setText(secs[2].querySelector('h2'),t.hHow);
+      var st=secs[2].querySelectorAll('.step-body'); [1,2,3].forEach(function(n,i){setText(st[i].querySelector('h3'),t['s'+n+'h']);setText(st[i].querySelector('p'),t['s'+n+'p']);});
+      // section 4: FAQ
+      setText(secs[3].querySelector('h2'),t.hFaq); setText(secs[3].querySelector('.lede'),t.faqLede);
+      var q=secs[3].querySelectorAll('.step-body'); for(var n=1;n<=9;n++){
         var b=q[n-1]; setText(b.querySelector('h3'),t['q'+n+'h']); var p=b.querySelector('p');
         if(n===9){var a=p.querySelector('a'); p.textContent=t.q9p+' '; a.textContent=t.viewSrc; p.appendChild(a);} else setText(p,t['q'+n+'p']);
       }
@@ -119,6 +123,23 @@ footer{padding:72px 0 88px}
         <div class="card">
           <h3>Pay per save</h3>
           <p>No subscription. A small one-time payment unlocks storage by size, in SKR, SOL, USDC, or USDT.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>File Proof</h2>
+      <p class="lede">Prove that a file existed at a given moment. Only the file's fingerprint and the time are recorded on Solana; the file itself is never put on-chain. Each proof is saved as a tamper-evident .vamp file.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Check it in any browser</h3>
+          <p>Verify a .vam or .vamp record without the app. Nothing is uploaded; your browser compares the file's fingerprint with the record on Solana.</p>
+          <p style="margin-top:10px"><a id="fp-open" href="verify.html">Open the Verify page &rarr;</a></p>
+        </div>
+        <div class="card">
+          <h3>A technical proof</h3>
+          <p>It shows that a file existed at the recorded time. It is not legal notarization.</p>
         </div>
       </div>
     </section>
@@ -208,7 +229,7 @@ footer{padding:72px 0 88px}
           <div class="step-num">Q08</div>
           <div class="step-body">
             <h3>Do I need to pay a monthly subscription?</h3>
-            <p>No. There's no subscription at all. You pay a small, one-time fee based on the note's size only when you save it. Notes under 200 bytes are free.</p>
+            <p>No. There's no subscription at all. You pay a small, one-time fee based on the note's size only when you save it. Very small notes are free.</p>
           </div>
         </div>
         <div class="step">
